@@ -1,0 +1,65 @@
+[project]
+name = "housing-prices"
+version = "0.1.0"
+description = "Housing prices Predictor – Programming Task"
+readme = "README.md"
+requires-python = "==3.9.13"
+dependencies = [
+    "fastapi[standard]>=0.128.0",
+    "structlog>=25.5.0",
+    "joblib==1.2.0",
+    "numpy==1.23.4",
+    "pandas==1.5.0",
+    "python-dateutil==2.8.2",
+    "pytz==2022.4",
+    "scikit-learn==1.1.2",
+    "scipy==1.9.2",
+    "six==1.16.0",
+    "threadpoolctl==3.1.0",
+]
+
+[build-system]
+requires = ["uv_build"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-root = "."
+
+[dependency-groups]
+dev = [
+    "pytest==8.3.4",
+]
+
+[tool.ruff.lint]
+select = [
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
+    # flake8-bandit
+    "S",
+    # pydocstyle
+    "D",
+]
+
+ignore = [
+    # D100-D107 ignore missing docstrings
+    # D203 disabled in favor of D211
+    # D213 disabled in favor of D212
+    # D406, D407, D408, D409, D413 disabled because we use Google convention.
+    "D100","D101","D102","D103","D104","D105","D106","D107","D203","D213","D406","D407","D408","D409",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101"]
+
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = ["Depends", "fastapi.Depends", "fastapi.params.Depends"]
