@@ -1,6 +1,6 @@
 from typing import Literal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 OceanProximity = Literal["NEAR BAY", "<1H OCEAN", "INLAND", "NEAR OCEAN", "ISLAND"]
 
@@ -16,8 +16,8 @@ class PredictRequest(BaseModel):
     median_income: float
     ocean_proximity: OceanProximity
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "longitude": -122.64,
                 "latitude": 38.01,
@@ -30,6 +30,7 @@ class PredictRequest(BaseModel):
                 "ocean_proximity": "NEAR OCEAN",
             }
         }
+    )
 
 
 class PredictResponse(BaseModel):

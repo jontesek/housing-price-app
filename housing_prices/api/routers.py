@@ -6,6 +6,7 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from housing_prices import predicting
 from housing_prices.settings import settings
 
+from .dependencies import get_configured_model
 from .limiter import limiter
 from .schemas import PredictRequest, PredictResponse
 
@@ -22,11 +23,6 @@ def validate_token(
             headers={"WWW-Authenticate": "Bearer"},
         )
     return credentials.credentials
-
-
-# Helper for ML model
-def get_configured_model():
-    return predicting.get_model(settings.model_name)
 
 
 # Setup routes
