@@ -24,7 +24,7 @@ jobs:
         version: "0.8"
 
     - name: Set up Python
-      run: uv python install 3.9
+      run: uv python install 3.9.13
 
     - name: Run tests
       env:
