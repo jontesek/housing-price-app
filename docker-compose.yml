@@ -21,7 +21,7 @@ services:
       - AUTH_TOKEN=abc
       - ENVIRONMENT=local
       - MODEL_NAME=model.joblib
-      - RATE_LIMIT_PER_MINUTE=5
+      - RATE_LIMIT_PER_MINUTE=10
       # - WEB_CONCURRENCY=2
     stdin_open: true # docker run -i
     tty: true        # docker run -t
