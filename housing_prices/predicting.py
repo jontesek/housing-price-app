@@ -1,3 +1,4 @@
+from functools import lru_cache
 from pathlib import Path
 
 import joblib
@@ -38,6 +39,13 @@ def prepare_input_df(item: dict):
 
 def predict_price(model, df) -> float:
     return model.predict(df)[0]
+
+
+# Caching for the API endpoint
+@lru_cache
+def get_model(model_name: str):
+    print("loading from disk")
+    return load_model(model_name)
 
 
 # For local testing
