@@ -28,6 +28,8 @@ def get_current_file_dir():
 def load_model(model_name: str):
     root_folder = get_current_file_dir().parent
     file_path = root_folder / "models" / model_name
+    if not file_path.exists():
+        raise ValueError(f"Model file not found: {model_name}")
     return joblib.load(file_path)
 
 
@@ -44,7 +46,7 @@ def predict_price(model, df) -> float:
 # Caching for the API endpoint
 @lru_cache
 def get_model(model_name: str):
-    print("loading from disk")
+    print("Loading model from disk")
     return load_model(model_name)
 
 
