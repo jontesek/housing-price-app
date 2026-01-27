@@ -3,10 +3,10 @@ from fastapi import FastAPI
 
 from housing_prices.api.routers import router
 from housing_prices.logs import configure_structlog
-from housing_prices.settings import IS_LOCAL
+from housing_prices.settings import settings
 
 # Setup app
-is_debug = IS_LOCAL
+is_debug = settings.is_local
 configure_structlog(is_debug=is_debug)
 logger = structlog.get_logger("app")
 app = FastAPI(

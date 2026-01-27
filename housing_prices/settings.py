@@ -1,6 +1,21 @@
-import os
+from pydantic import computed_field
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
-ENVIRONMENT = os.getenv("ENVIRONMENT", "local")
-IS_LOCAL = ENVIRONMENT == "local"
 
-MODEL_NAME = os.getenv("MODEL_NAME", "model.joblib")
+class Settings(BaseSettings):
+    auth_token: str
+    environment: str = "local"
+    model_name: str = "model.joblib"
+
+    @computed_field
+    @property
+    def is_local(self) -> bool:
+        return self.environment == "local"
+
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+    )
+
+
+settings = Settings()  # type: ignore
