@@ -1,11 +1,12 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, Security, status
+from fastapi import APIRouter, Depends, HTTPException, Request, Security, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from housing_prices import predicting
 from housing_prices.settings import settings
 
+from .limiter import limiter
 from .schemas import PredictRequest, PredictResponse
 
 
@@ -42,7 +43,10 @@ def health():
     response_model=PredictResponse,
     dependencies=[Security(validate_token)],
 )
-def predict_price(request_json: PredictRequest, model=Depends(get_configured_model)):
-    input_df = predicting.prepare_input_df(request_json.model_dump())
+@limiter.limit(f"{settings.rate_limit_per_minute}/minute")
+def predict_price(
+    request: Request, request_data: PredictRequest, model=Depends(get_configured_model)
+):
+    input_df = predicting.prepare_input_df(request_data.model_dump())
     price = predicting.predict_price(model, input_df)
     return PredictResponse(house_price=price)

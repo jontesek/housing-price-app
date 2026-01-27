@@ -1,6 +1,9 @@
 import structlog
 from fastapi import FastAPI
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
 
+from housing_prices.api.limiter import limiter
 from housing_prices.api.routers import router
 from housing_prices.logs import configure_structlog
 from housing_prices.settings import settings
@@ -16,6 +19,10 @@ app = FastAPI(
     debug=is_debug,
 )
 logger.info("FastAPI app created")
+
+# Setup rate limiter
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)  # type: ignore
 
 # Add API routes
 app.include_router(router)

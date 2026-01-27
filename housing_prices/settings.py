@@ -6,6 +6,7 @@ class Settings(BaseSettings):
     auth_token: str
     environment: str = "local"
     model_name: str = "model.joblib"
+    rate_limit_per_minute: int = 10
 
     @computed_field
     @property
