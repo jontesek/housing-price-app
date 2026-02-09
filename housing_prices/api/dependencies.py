@@ -4,7 +4,7 @@ from fastapi import HTTPException, Security, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from slowapi import Limiter
 
-from housing_prices.predicting import get_model
+from housing_prices.prediction import get_model
 from housing_prices.settings import settings
 
 

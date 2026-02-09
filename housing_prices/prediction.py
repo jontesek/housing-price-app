@@ -3,6 +3,7 @@ from pathlib import Path
 
 import joblib
 import pandas as pd
+from sklearn.base import BaseEstimator
 
 MODEL_COLUMNS = [
     "longitude",
@@ -21,11 +22,11 @@ MODEL_COLUMNS = [
 ]
 
 
-def get_current_file_dir():
+def get_current_file_dir() -> Path:
     return Path(__file__).resolve().parent
 
 
-def load_model(model_name: str):
+def load_model(model_name: str) -> BaseEstimator:
     root_folder = get_current_file_dir().parent
     file_path = root_folder / "models" / model_name
     if not file_path.exists():
@@ -33,7 +34,7 @@ def load_model(model_name: str):
     return joblib.load(file_path)
 
 
-def prepare_input_df(item: dict):
+def prepare_input_df(item: dict) -> pd.DataFrame:
     df_single = pd.DataFrame([item])
     df_encoded = pd.get_dummies(df_single)
     return df_encoded.reindex(columns=MODEL_COLUMNS, fill_value=0)
@@ -43,9 +44,9 @@ def predict_price(model, df) -> float:
     return model.predict(df)[0]
 
 
-# Caching for the API endpoint
+# Dependency caching for the API endpoint
 @lru_cache
-def get_model(model_name: str):
+def get_model(model_name: str) -> BaseEstimator:
     print("Loading model from disk")
     return load_model(model_name)
 

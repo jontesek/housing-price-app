@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, Request, Security
 
-from housing_prices import predicting
+from housing_prices import prediction
 from housing_prices.settings import settings
 
 from .dependencies import get_configured_model, limiter, validate_token
@@ -25,6 +25,6 @@ def predict_price(
     request: Request, request_data: PredictRequest, model=Depends(get_configured_model)
 ):
     """Receive house data, return house price."""
-    input_df = predicting.prepare_input_df(request_data.model_dump())
-    price = predicting.predict_price(model, input_df)
+    input_df = prediction.prepare_input_df(request_data.model_dump())
+    price = prediction.predict_price(model, input_df)
     return PredictResponse(house_price=price)
